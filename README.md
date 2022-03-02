@@ -1,6 +1,6 @@
 # react-native-unity-view
 
-Integrate unity3d within a React Native app. Add a react native component to show unity. Works on Android (To Be Done for iOS)
+Integrate unity3d within a React Native app. Add a react native component to show unity. Works on Android (**TODO** for iOS)
 
 ## Notice
 
@@ -34,15 +34,8 @@ configuration expects that you place your Unity Project in the following positio
 
 #### Add Unity Build scripts
 
-Copy [Build.cs](/template/Build.cs) and [XCodePostBuild.cs](/template/XCodePostBuild.cs) and place them in
+Copy [Build.cs](example/unity/UnityViewExample/Assets/Scripts/Editor/Build.cs) and [XCodePostBuild.cs](example/unity/UnityViewExample/Assets/Scripts/Editor/XCodePostBuild.cs) and place them in
 `unity/<Your Unity Project>/Assets/Scripts/Editor/`
-
-*If you want to place your Unity Project somewhere else you will have to change the following paths which is relative to
-the Untiy Project*
-
-* [Line 21: Build.cs](template/Build.cs#L21)
-* [Line 65: Build.cs](template/Build.cs#L65)
-* [Line 56: XCodePostBuild.cs](template/XCodePostBuild.cs#L56)
 
 #### Player Settings
 
@@ -52,14 +45,9 @@ the Untiy Project*
 
 ##### Additional changes for Android Platform
 
-Under `Other Settings` make sure `Scripting Backend` is set to `IL2CPP`, and `ARM64` is checked under `Target Architectures`.
+Under `Other Settings` make sure `Scripting Backend` is set to `IL2CPP`, `Api Compatibility Level` is `.NET Standard 2.0`, and `ARM64` is checked under `Target Architectures`.
 
 ![Android Configruation](docs/android-player-settings.png)
-
-Under `Other Settings` make sure `Auto Graphics API` is unchecked, and the list only contains `OpenGLES3` and `OpenGLES2` in that order.
-
-![Android graphics](docs/android-graphics.png)
-
 
 ##### Additional changes for iOS Platform
 
@@ -69,7 +57,7 @@ Under `Other Settings` make sure `Auto Graphics API` is checked.
 
 #### Now Unity is configured and ready
 
-Now you can export the Unity Project using `ReactNative => Export Android` or `ReactNative => Export IOS`.
+Now you can export the Unity Project using `ReactNative => Export Android` (**TODO** or `ReactNative => Export IOS`).
 
 ![Build dropdown](docs/unity-build.png)
 
@@ -77,7 +65,7 @@ Then the exported artifacts will be placed in a folder called `unityLibrary` ins
 
 ### Adding UnityMessageManager Support
 
-Add the contents of the [Assets](template/Assets) folder, to your Unity project.
+Add the contents of the [UnityMessageManager.cs](example/unity/UnityViewExample/Assets/Scripts/UnityMessageManager.cs) to your Unity project.
 
 *You will have to rebuild for changes to appear in React Native.*
 
@@ -113,9 +101,7 @@ include ":unityLibrary"
 project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
 
-##### After Unity Export
-
-#### iOS build
+#### iOS build (**TODO**)
 
 1. Open your `ios/{PRODUCT_NAME}.xcworkspace` and add the exported project(`ios/unityLibrary/Unity-Iphone.xcodeproj`) to the workspace root
 
