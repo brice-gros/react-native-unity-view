@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -101,7 +101,7 @@ public class UnityMessageManager : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            using (AndroidJavaClass jc = new AndroidJavaClass("no.asmadsen.unity.view.UnityUtils"))
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.reactnativeunityview.UnityUtils"))
             {
                 jc.CallStatic("onUnityMessage", message);
             }

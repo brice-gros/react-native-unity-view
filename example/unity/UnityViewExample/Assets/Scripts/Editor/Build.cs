@@ -12,8 +12,8 @@ public class Build : MonoBehaviour {
 
     static readonly string apkPath = Path.Combine(ProjectPath, "Builds/" + Application.productName + ".apk");
 
-    private static readonly string androidBasePath =
-        Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
+    private static readonly string androidLocalPropertiesPath =
+        Path.GetFullPath(Path.Combine(ProjectPath, "../../android/local.properties"));
     private static readonly string androidExportPath =
         Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary"));
 
@@ -23,8 +23,20 @@ public class Build : MonoBehaviour {
     [MenuItem("ReactNative/Export Android (Unity 2020.3.*) %&n", false, 1)]
     public static void DoBuildAndroidLibrary() {
         DoBuildAndroid(Path.Combine(apkPath, "unityLibrary"));
-        Copy(Path.Combine(apkPath, "local.properties"), Path.Combine(androidBasePath, "local.properties"));
+        File.Copy(Path.Combine(apkPath, "local.properties"), androidLocalPropertiesPath, true);
         Copy(Path.Combine(apkPath, "launcher/src/main/res"), Path.Combine(androidExportPath, "src/main/res"));
+    }
+
+    public static BuildOptions GetBuildOptions() {
+        var options = BuildOptions.AcceptExternalModificationsToPlayer;
+        // Enable debugging from the Build Settings UI check boxes
+        if (UnityEditor.EditorUserBuildSettings.development) {
+          options |= BuildOptions.Development;
+        }
+        if (UnityEditor.EditorUserBuildSettings.allowDebugging) {
+          options |= BuildOptions.AllowDebugging;
+        }
+        return options;
     }
 
     public static void DoBuildAndroid(String buildPath) {
@@ -38,12 +50,11 @@ public class Build : MonoBehaviour {
 
         EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
 
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
         var report = BuildPipeline.BuildPlayer(
             GetEnabledScenes(),
             apkPath,
             BuildTarget.Android,
-            options
+            GetBuildOptions()
         );
 
         if (report.summary.result != BuildResult.Succeeded) {
@@ -71,7 +82,8 @@ public class Build : MonoBehaviour {
         File.WriteAllText(manifest_file, manifest_text);
     }
 
-    [MenuItem("ReactNative/Export IOS (Unity 2020.3.*) %&i", false, 3)]
+    // TODO: ios NOT ported yet
+    //[MenuItem("ReactNative/Export IOS (Unity 2020.3.*) %&i", false, 3)]
     public static void DoBuildIOS() {
         if (Directory.Exists(iosExportPath)) {
             Directory.Delete(iosExportPath, true);
@@ -79,12 +91,11 @@ public class Build : MonoBehaviour {
 
         EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
 
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
         var report = BuildPipeline.BuildPlayer(
             GetEnabledScenes(),
             iosExportPath,
             BuildTarget.iOS,
-            options
+            GetBuildOptions()
         );
 
         if (report.summary.result != BuildResult.Succeeded) {
