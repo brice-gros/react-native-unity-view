@@ -198,7 +198,7 @@ render() {
 ### UnityModule
 
 ```
-import { UnityModule } from 'react-native-unity-view';
+import { UnityModule } from '@brice-gros/react-native-unity-view';
 ```
 
 #### `isReady(): Promise<boolean>`
@@ -335,7 +335,7 @@ Resume the unity player.
 ```
 import React from 'react';
 import { StyleSheet, Image, View, Dimensions } from 'react-native';
-import UnityView from 'react-native-unity-view';
+import UnityView from '@brice-gros/react-native-unity-view';
 
 export default class App extends React.Component<Props, State> {
     render() {

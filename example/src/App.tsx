@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Button, Alert } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import UnityView, { UnityModule } from 'react-native-unity-view';
+import UnityView, { UnityModule } from '@brice-gros/react-native-unity-view';
 
 
 export default class App extends Component {

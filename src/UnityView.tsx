@@ -60,11 +60,11 @@ class UnityView extends Component<UnityViewProps> {
 }
 
 const LINKING_ERROR =
-  `The package 'react-native-unity-view' doesn't seem to be linked. Make sure: \n\n` +
+  `The package '@brice-gros/react-native-unity-view' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow, Expo does not support native libraries\n';
-  
+
 const ComponentName = 'RNUnityView';
 NativeUnityView =
   UIManager.getViewManagerConfig(ComponentName) != null
