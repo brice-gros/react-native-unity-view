@@ -1,6 +1,6 @@
 {
   "name": "@brice-gros/react-native-unity-view",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Embed Unity Player 2020.3 inside a React Native 0.63 / Node 16 LTS app",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
