@@ -2,84 +2,46 @@
 
 Integrate unity3d within a React Native app. Add a react native component to show unity. Works on Android (**TODO** on iOS)
 
-## Notice
+# Notice
 
 This is a fork of [asmadsen/react-native-unity-view](https://github.com/asmadsen/react-native-unity-view) to make it work with node 16 LTS, React Native >= 0.63 and Unity 2020.3 LTS
 
-**This project may or may not be updated depending on the further use of it at my workplace, however feel free to fork it**
+**This project may or may not be updated depending on the further use of it, feel free to fork it**
 
-## Requirements
+# Requirements
 
  - Unity 2020.3+
- - Nodejs 16+
+ - Nodejs 16.14+
  - React Native 0.63
 
-## Install
 
-`yarn add @brice-gros/react-native-unity-view`
+# Prerequisites
 
-## Configuration
+Before anything, a React-Native app is needed, but **beware**, do not use `Expo` nor `create-react-native-app` which uses `Expo` or you'll have to eject it
 
-Since this project uses the exported data from Unity you will have do some extra configuring than a normal React Native module.
-
-### Configuring Unity
-
-To configure Unity to add the exported files somewhere accessible to your app we use some build scripts. And the default
-configuration expects that you place your Unity Project in the following position relative to our app.
-
-```
-.
-├── android
-├── ios
-├── unity
-│   └── <Your Unity Project>    // Example: Cube
-├── node_modules
-├── package.json
-└── README.md
+```bash
+nvm install 16.14.0
+nvm use 16.14.0
+npm install yarn
+yarn install react-native
+npx react-native init ReactUnityApp --template react-native-template-typescript
+cd ReactUnityApp
 ```
 
-#### Add Unity Build scripts
+# Install
 
-Copy [Build.cs](example/unity/UnityViewExample/Assets/Scripts/Editor/Build.cs) and [XCodePostBuild.cs](example/unity/UnityViewExample/Assets/Scripts/Editor/XCodePostBuild.cs) and place them in
-`unity/<Your Unity Project>/Assets/Scripts/Editor/`
+```bash
+yarn add @brice-gros/react-native-unity-view
+```
 
-#### Player Settings
+Since this project uses the exported data from Unity you will have more configuration steps than a normal React Native module.
 
-1. Open your Unity Project
-2. Go to Player settings (File => Build Settings => Player Settings)
-3. Change `Product Name` to the name of your Xcode project. (`ios/${XcodeProjectName}.xcodeproj`)
+## Configure Native Build
 
-##### Additional changes for Android Platform
+For the react native project to recognize the `unityLibrary` folder which will contain the Unity exported project, some changes as to be done for each platform.
+### Android Build
 
-Under `Other Settings` make sure `Scripting Backend` is set to `IL2CPP`, `Api Compatibility Level` is `.NET Standard 2.0`, and `ARM64` is checked under `Target Architectures`.
-
-![Android Configruation](docs/android-player-settings.png)
-
-##### Additional changes for iOS Platform (**TODO**)
-
-Under `Other Settings` make sure `Auto Graphics API` is checked.
-
-![Player settings for iOS](docs/ios-player-settings.png)
-
-#### Now Unity is configured and ready
-
-Now you can export the Unity Project using `ReactNative => Export Android` (**TODO** or `ReactNative => Export IOS`).
-
-![Build dropdown](docs/unity-build.png)
-
-Then the exported artifacts will be placed in a folder called `unityLibrary` inside either the `android` or the `ios` folder.
-
-### Adding UnityMessageManager Support
-
-Add the contents of the [UnityMessageManager.cs](example/unity/UnityViewExample/Assets/Scripts/UnityMessageManager.cs) to your Unity project.
-
-*You will have to rebuild for changes to appear in React Native.*
-
-### Configure Native Build
-
-#### Android Build
-
-To allow for the project to recognize the `unityLibrary` folder you will have to add two lines to `android/settings.gradle`.
+To have gradle working properly, some modifications has to be done to the react native project:
 
 1. Add the following to the `android/build.gradle`
 ```
@@ -104,10 +66,15 @@ allprojects {
 
 ```
 include ":unityLibrary"
-project(":unityLibrary").projectDir = file("./unityLibrary")
+project(":unityLibrary").projectDir = new File(rootProject.projectDir, './unityLibrary')
 ```
 
-#### iOS build (**TODO**)
+3. Add this line to `gradle.properties`:
+```
+unityStreamingAssets=.unity3d
+```
+
+### iOS build (**TODO**)
 
 1. Open your `ios/{PRODUCT_NAME}.xcworkspace` and add the exported project(`ios/unityLibrary/Unity-Iphone.xcodeproj`) to the workspace root
 
@@ -134,17 +101,97 @@ int main(int argc, char * argv[]) {
 }
 ```
 
-## Use in React Native
+## Configuring Unity
 
-### UnityView Props
+To configure Unity to add the exported files to your app we use some build scripts.
+And the default configuration expects that you place your Unity Project in the following position relative to our app.
 
-#### `onMessage`
+```
+.
+├── android
+├── ios
+├── unity
+│   └── <Your Unity Project>    // Example: Cube
+├── node_modules
+├── package.json
+└── README.md
+```
+
+### Add Unity package
+From the package manager menu (`Window` > `Package Manager`), select from the left corner `Add package from git URL`, and enter `com.unity.nuget.newtonsoft-json` and be sure to use version 3.0.1+
+
+### Add Unity scripts
+
+Copy template scripts to your project:
+```bash
+cp -r node_modules/@brice-gros/react-native-unity-view/template/* ./unity/YourProject/
+```
+This will add:
+ - [Build.cs](template/Assets/Scripts/Editor/Build.cs), controlling the build from the editor
+ - [XCodePostBuild.cs](template/Assets/Scripts/Editor/XCodePostBuild.cs), used for ios (**TODO**)
+ - [UnityMessageManager.cs](template/Assets/Scripts/UnityMessageManager.cs), a script managing the messages between React Native and Unity
+ - [Rotate.cs](template/Assets/Scripts/Rotate.cs), a MonoBehavior sample script rotating a game object controllable from react native, and sending back a message to react native
+
+
+### Player Settings
+
+1. Open your Unity Project
+2. Go to Player settings (File => Build Settings => Player Settings)
+3. Change `Product Name` to the name of your Xcode project. (`ios/${XcodeProjectName}.xcodeproj`)
+
+#### ◼️ Additional changes for Android Settings
+
+Under `Other Settings` make sure:
+ - `Scripting Backend` is set to `IL2CPP`
+ - `Api Compatibility Level` is `.NET Standard 2.0`
+ - under `Target Architectures`, `ARM64` and `ARMv7` are checked
+
+![Android Configruation](docs/android-player-settings.png)
+
+#### ◼️ Additional changes for iOS Settings (**TODO**)
+
+Under `Other Settings` make sure `Auto Graphics API` is checked.
+
+![Player settings for iOS](docs/ios-player-settings.png)
+
+
+### Export From Unity
+
+To export, open the `Build Settings` window (`File` > `Build Settings...`).
+
+💡 For a `Development` build with `Script Debugging` enabled, tick the corresponding boxes as usual.
+
+⚠️ **Don't use the `Build` or `Export` button**, and note that using `Switch platform` is not required
+
+👉 **But export** the Unity Project using `ReactNative => Export Android` (**TODO** or `ReactNative => Export IOS`).
+
+![Build dropdown](docs/unity-build.png)
+
+Then the exported artifacts will be placed in a folder called `unityLibrary` inside either the `android` or `ios` folder.
+
+> 🛠️ _**ANDROID KNOWN ISSUES**_:
+>
+> On Android, the `local.properties` file from the Unity build folder will be added in your react native project as `android/local.properties` unless it already exists.
+>
+> _An error message can require you to accept Android sdk manager licenses on the first Android build, this can be done using the following commandline:_
+> ```bash
+> # From the directory specified by `sdk.dir` in local.properties, run:
+> ./tools/bin/sdkmanager.bat --licenses
+> ```
+>
+> Also, depending upon Gradle version, React Native project's `android/build.gradle` can contain a `ndkVersion` entry which is incompatible with the `sdk.dir` and `ndk.dir` defined by `local.properties`. In that case, either change it to match the `ndkVersion` from the NDK at `ndk.dir`, or comment both lines for `sdk.dir` and `ndk.dir` in `local.properties`.
+
+# Use in React Native
+
+## UnityView Props
+
+### `onMessage`
 
 Receive message from Unity
 
 *Make sure you have added [UnityMessageManager](#adding-unitymessagemanager-support)*
 
-##### Example:
+#### Example:
 
 1. Send message from Unity
 ```C#
@@ -169,7 +216,7 @@ render() {
 }
 ```
 
-#### `onUnityMessage`
+### `onUnityMessage`
 
 [**Recommended**]Receive json message from unity.
 
@@ -195,21 +242,21 @@ render() {
 }
 ```
 
-### UnityModule
+## UnityModule
 
 ```
 import { UnityModule } from '@brice-gros/react-native-unity-view';
 ```
 
-#### `isReady(): Promise<boolean>`
+### `isReady(): Promise<boolean>`
 
 Return whether is unity ready.
 
-#### `createUnity(): Promise<boolean>`
+### `createUnity(): Promise<boolean>`
 
 Manual init the Unity. Usually Unity is auto created when the first view is added.
 
-#### `postMessage(gameObject: string, methodName: string, message: string)`
+### `postMessage(gameObject: string, methodName: string, message: string)`
 
 Send message to unity.
 
@@ -255,7 +302,7 @@ render() {
 
 ```
 
-#### `postMessageToUnityManager(message: string | UnityViewMessage)`
+### `postMessageToUnityManager(message: string | UnityViewMessage)`
 
 Send message to `UnityMessageManager`.
 
@@ -309,44 +356,44 @@ render() {
 }
 ```
 
-#### `addMessageListener(listener: (message: string | MessageHandler) => void): number`
+### `addMessageListener(listener: (message: string | MessageHandler) => void): number`
 
 Receive string and json message from unity.
 
-#### `addStringMessageListener(listener: (message: string) => void): number`
+### `addStringMessageListener(listener: (message: string) => void): number`
 
 Only receive string message from unity.
 
-#### `addUnityMessageListener(listener: (handler: MessageHandler) => void): number`
+### `addUnityMessageListener(listener: (handler: MessageHandler) => void): number`
 
 Only receive json message from unity.
 
-#### `pause()`
+### `pause()`
 
 Pause the unity player.
 
-#### `resume()`
+### `resume()`
 
 Resume the unity player.
 
 
-### Example Code
+## Example Code
 
-```
+```tsx
 import React from 'react';
-import { StyleSheet, Image, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import UnityView from '@brice-gros/react-native-unity-view';
 
-export default class App extends React.Component<Props, State> {
-    render() {
+export default class App extends React.Component {
+  render() {
     return (
-      <View style={styles.container}>
-        <UnityView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, }} /> : null}
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <UnityView style={{ flex: 1 }}/>
+        </View>
       </View>
     );
   }
 }
 ```
+See [github repository](https://github.com/asmadsen/react-native-unity-view/tree/master/example) for a complete example
