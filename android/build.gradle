@@ -55,5 +55,7 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
+    implementation project(':unityLibrary')
+    implementation ':unity-classes'
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
