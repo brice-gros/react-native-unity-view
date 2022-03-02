@@ -4,9 +4,15 @@ Integrate unity3d within a React Native app. Add a react native component to sho
 
 ## Notice
 
-This is a fork of [https://github.com/asmadsen/react-native-unity-view]() to make it work with node 16 LTS, React Native >= 0.63 and Unity 2020.3 LTS
+This is a fork of [asmadsen/react-native-unity-view](https://github.com/asmadsen/react-native-unity-view) to make it work with node 16 LTS, React Native >= 0.63 and Unity 2020.3 LTS
 
 **This project may or may not be updated depending on the further use of it at my workplace, however feel free to fork it**
+
+## Requirements
+
+ - Unity 2020.3+
+ - Nodejs 16+
+ - React Native 0.63
 
 ## Install
 
