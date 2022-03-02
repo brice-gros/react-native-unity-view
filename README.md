@@ -1,6 +1,6 @@
 # react-native-unity-view
 
-Integrate unity3d within a React Native app. Add a react native component to show unity. Works on Android (**TODO** for iOS)
+Integrate unity3d within a React Native app. Add a react native component to show unity. Works on Android (**TODO** on iOS)
 
 ## Notice
 
@@ -49,7 +49,7 @@ Under `Other Settings` make sure `Scripting Backend` is set to `IL2CPP`, `Api Co
 
 ![Android Configruation](docs/android-player-settings.png)
 
-##### Additional changes for iOS Platform
+##### Additional changes for iOS Platform (**TODO**)
 
 Under `Other Settings` make sure `Auto Graphics API` is checked.
 
