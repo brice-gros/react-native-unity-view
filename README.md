@@ -179,7 +179,7 @@ Then the exported artifacts will be placed in a folder called `unityLibrary` ins
 > ./tools/bin/sdkmanager.bat --licenses
 > ```
 >
-> Also, depending upon Gradle version, React Native project's `android/build.gradle` can contain a `ndkVersion` entry which is incompatible with the `sdk.dir` and `ndk.dir` defined by `local.properties`. In that case, either change it to match the `ndkVersion` from the NDK at `ndk.dir`, or comment both lines for `sdk.dir` and `ndk.dir` in `local.properties`.
+> Also, since Gradle version >7, React Native project's `android/build.gradle` contains a `ndkVersion` entry which can be incompatible with the `sdk.dir` and `ndk.dir` defined by `local.properties`. In that case, either change it to match the `ndkVersion` from the NDK at `ndk.dir`, or comment out both lines for `sdk.dir` and `ndk.dir` in `local.properties`.
 
 # Use in React Native
 
