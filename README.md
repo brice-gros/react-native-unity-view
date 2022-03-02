@@ -20,6 +20,7 @@ This is a fork of [asmadsen/react-native-unity-view](https://github.com/asmadsen
 Before anything, a React-Native app is needed, but **beware**, do not use `Expo` nor `create-react-native-app` which uses `Expo` or you'll have to eject it
 
 ```bash
+choco install nvm # for windows only
 nvm install 16.14.0
 nvm use 16.14.0
 npm install yarn
