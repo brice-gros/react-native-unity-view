@@ -397,4 +397,4 @@ export default class App extends React.Component {
   }
 }
 ```
-See [github repository](https://github.com/asmadsen/react-native-unity-view/tree/master/example) for a complete example
+See [github repository](https://github.com/brice-gros/react-native-unity-view/tree/master/example) for a complete example
