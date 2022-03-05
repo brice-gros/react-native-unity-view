@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "msjsdiag.vscode-react-native",
+        "eamodio.gitlens",
+        "unity.unity-debug"
+    ]
+}

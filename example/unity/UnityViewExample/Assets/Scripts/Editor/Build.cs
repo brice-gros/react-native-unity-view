@@ -32,7 +32,7 @@ public class Build : MonoBehaviour {
     }
 
     public static BuildOptions GetBuildOptions() {
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
+        BuildOptions options = 0;
         // Enable debugging from the Build Settings UI check boxes
         if (UnityEditor.EditorUserBuildSettings.development) {
           options |= BuildOptions.Development;
@@ -87,8 +87,7 @@ public class Build : MonoBehaviour {
         File.WriteAllText(manifest_file, manifest_text);
     }
 
-    // TODO: ios NOT ported yet
-    //[MenuItem("ReactNative/Export IOS (Unity 2020.3.*) %&i", false, 3)]
+    [MenuItem("ReactNative/Export IOS (Unity 2020.3.*) %&i", false, 3)]
     public static void DoBuildIOS() {
         if (Directory.Exists(iosExportPath)) {
             Directory.Delete(iosExportPath, true);

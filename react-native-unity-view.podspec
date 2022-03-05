@@ -16,4 +16,12 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency "React-Core"
+  
+  #s.frameworks = 'UnityFramework'
+  ## Added vendored properties to help locate the name of the framework
+  #s.vendored_frameworks = 'Uni	tyFramework.framework'
+  #s.vendored_libraries = 'UnityFramework'
+  s.xcconfig = {
+    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/../unityLibrary" "${PODS_ROOT}/../unityLibrary/Classes" "${PODS_ROOT}/../unityLibrary/Classes/Native" "${PODS_ROOT}/../unityLibrary/Classes/PluginBase" "${PODS_ROOT}/../unityLibrary/Classes/UI" "${PODS_ROOT}/../unityLibrary/Classes/Unity" "${PODS_CONFIGURATION_BUILD_DIR}"',
+ }
 end
